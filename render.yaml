@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: agrinexa-solo
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -c "from run import app, init_db; init_db(app)" && gunicorn --bind 0.0.0.0:$PORT run:app
+    healthCheckPath: /api/health
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: SESSION_COOKIE_SECURE
+        value: "true"
